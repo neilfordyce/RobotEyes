@@ -1,0 +1,188 @@
+AC42001 RESEARCH FRONTIERS: WHAT ROBOT EYES CAN DO
+
+LABORATORY 1 WORKSHEET:
+CRASH INTRODUCTION TO MATLAB, IMAGE ACQUISITION AND MANIPULATION BASICS
+
+
+**** INTRODUCTION
+
+Purpose
+Familiarization with MATLAB; image acquisition; images as numerical matrices; basic operations with images.
+
+Outcome
+(1a) Familiarization or practical reminder of MATLAB programming.
+(1b) MATLAB code to load an image into an array, convert colour to b/w, and save image to file.
+(1c) if possible: 
+	playing with stereo pair acquisition; first attempt to simple code computing SSD btw
+	two support windows (small images).
+
+Material supplied
+- 2 stereo pairs on which to test disparity code
+- one example of disparity map
+
+
+**** WHAT TO DO
+
+(PART 1) FAMILIARIZATION WITH MATLAB.
+
+Those who are already familiar with MATLAB can go directly to Part 2.
+    If you are not familiar with MATLAB, or need refreshing the language,
+    you should spend most of the time learning the basic MATLAB operations you need:
+	- starting up MATLAB, using the MATLAB interface
+	- scripts and programs (.m files)
+	- basic MATLAB syntax: operations, variables, arrays
+	- I/O involving files, specifically reading/saving images
+	- loops and vectorization (fast loops)
+    
+    If you have MATLAB on your laptop you will know how to start it.
+    If you are on a laboratory computer:
+	- log on 
+	- open the "start" menu
+	- if MATLAB is not in the list on the left, open it from the "All programmes" list
+	- if MATLAB is not installed, move to a machine on which it is (some computers do
+		not have MATLAB installed)
+
+In addition to trying out the examples from the MATLAB online tutorial,
+you should work through as many as possible of the following problems.
+Useful MATLAB functions are given in square brackets.
+
+
+==== GENERAL MATLAB TOOLS
+
+1. SCRIPT: define two 3-D vectors with arbitrary values;
+   compute and output their norms [norm()],
+   their differences, and the norm of their differences.
+2. SCRIPT: Build two matrices, A and B, of dimensions 3x7 and 7x3 respectively, with
+   arbitrary values;
+   build and output a third matrix, C, which is the concatenation (A | B'),
+   where the prime indicates transpose.
+3. SCRIPT: Using the matrix C in the previous exercise, plot each column
+   in a separate graph [plot(), figure]
+4. FUNCTION: write a function which display the histograms of the entries of an array [hist()].
+   Generate 1000 random Gaussian numbers [randn()] and plot their histogram
+   using your function.
+   (What seems to be the minimum number of bins required to make the plot look
+   plausibly Gaussian?)
+5. FUNCTION: write a function which adds 3 to all entries of a matrix,
+   then divide all entries by 5, then computes and output two arrays:
+   in the first one, each element is the mean of a column of the resulting matrix [mean()];
+   in the second one, each element is the standard deviation of a column [stdev()].
+   Generate a 10x4 matrix, A, of random numbers [rand()], and call your function
+   to change it and output mean and stdev of all the columns.
+
+    As soon as you feel confident with the basic material, move on to part 2.
+    Spend as much time as needed on MATLAB before moving on to disparity estimation.
+
+    Refer to the following parts of the online MATLAB "Getting Started" guide
+    ( http://www.mathworks.com/access/helpdesk/help/pdf_doc/matlab/getstart.pdf )
+    which contains theory and examples:
+	- Chapters 1 (introduction) and 2 (matrices and arrays)
+	- Pages 3-51 to 3-56 (basic plotting tools)
+	- Pages 4-2 to 4-8 (basic program instructions, e.g., flow control)
+	- Pages 4-20 to 4-23 (scripts and functions) and
+   		  4-31, 4-42 (vectorization, preallocation)
+
+
+==== LOADING AND SAVING IMAGES, AND CONVERTING COLOUR TO B/W:
+Below is an example of loading 10 colour images from a specified directory,
+and converting them into greyscale (monochrome) for further processing.
+Prelim notes:
+- STRCAT concatenates strings, so you can build file names at run time
+- IMWRITE writes an image matrix to a file
+- IMREAD reads images into a matrix
+- SIZE returns the size of a matrix (hence an img size in pixels)
+- ":" means "all items"; e.g., vect(:)=1 sets to 1 all entries of vector "vect"
+- "..." indicates that the line is continued on the next one
+
+for i = 1:10
+    
+    % prepare file name of next colour image to load
+    name = ...
+        strcat('c:\users\aa\teaching\AC52021visPerc\PCAfaces\face', ...
+            int2str(i) );
+    name = strcat(name, '.jpg');
+
+    f=imread(name);
+
+    % convert to monochrome by combining the RGB values 
+    % according to the NTSC standard
+    face = .2989*f(:,:,1)...
+        +.5870*f(:,:,2)...
+        +.1140*f(:,:,3);
+
+    % resize to make all imgs uniform (155x128).
+    % Some imgs in this set have a few rows or cols extra
+    [sr,sc] = size(face);
+    if sr > 155
+        face = face(1:155,:);  % if there are more than 155 rows, keep only the first 155
+    end
+    
+    if sc > 128
+        face = face(:,1:128);  % if there are more than 128 columns, keep only the first 128
+    end
+    
+    % save monochrome image
+    name = ...
+        strcat('c:\users\aa\teaching\AC52021visPerc\PCAfaces\faceBW', ...
+            int2str(i) );
+    name = strcat(name, '.jpg');
+
+    imwrite(face, name);
+    
+    end  % for loop ends
+
+
+
+(PART 2) A SIMPLE DISPARITY ESTIMATION PROGRAM IN MATLAB. 
+
+Revise the handout illustrating disparity estimation,
+for instance SSD or SAD. Here is a reminder of the essentials:
+	- compare two support (small) windows;
+	- return a number which quantifies the difference between the two windows (must be zero if 
+		comparing two copies of the same window);
+	- you must define a suitable size for the window, and both windows must be the same size;
+	- for normalized SSD, recall to subtract the average intensities in each window before
+		the difference, and divide by the product of the standard deviations.
+Once you have a prototype code, test it on the synthetic images provided on the VLE:
+	- scene_l.bmp, scene_r.bmp: stereo pair of an indoors scene
+	- pentagon_left.bmp, pentagon_r.bmp: stereo pair of an aerial view of the pentagon
+	- pentagon_dispmap.bmp: example of disparity map for the Pentagon pair. Your disparity code
+		should obtain a similar result.
+Try to acquire your own pair of images by translating the camera, trying to keep the Z axis
+parallel to itself.
+	- test the disparity values by hand: what range do they cover? Is this suitable?
+	- how far would you place the camera between snapshots to make life easy for your disparit
+		estimation program?
+	- what problems arise if objects move, or lights change, between snapshots? 
+	- following on from the previous point: should you try to capture the two images in 
+		quick succession, or can you afford to wait?
+
+
+**** A NOTE ON TESTING STRATEGY
+
+Testing your code is an essential part not only of computer vision, but of any scientific task.
+A complete treatment of testing is impossible here, but a few guidelines are given below.
+- A testing strategy is, essentially, a plan. You plan what experiments to carry out to
+  convince yourself and others achieves its purpose. In essence, you plan two things:
+	1) what and how many data sets to use: these are chosen as example of situations occurring 
+		when the program run by users in normal conditions, including as many
+		errors as can be anticipated;
+	2) what you expect as a correct answer with each data set above.
+- Test on increasingly complex data sets, starting with the simplest possible. In this way, you
+	identify and fix one problem at a time. For instance, in our case:
+	= start by running your SSD code on the *same* window (easiest possible data set).
+	  You should get a SSD score of zero, as all differences are zero. This is the expected result.
+	  If you don't, fix the code. If you do, move to the next case.
+	= using only one image, compute the SSD score by moving your window near its original
+	  position. The expected result is that you get the minimum score when the moving window
+	  is in the original position. If you don't, fix the code. If you do, move to the next case.
+	= Et cetera: build your own increasingly complicated cases, until the most general level
+	  of generality. In our case, this means that SSD must work correctly with the synthetic pairs provided,
+	  and generate sensible results with the final test pair.
+	  You may want to take your own image pairs by moving a camera in two nearby positions.
+	  Check that the two resulting images are similar as defined by the theory of small-baseline stereo.
+
+A reasonably extensive discussion of testing in computer vision is given, for instance,
+in Trucco and Verri, Appendix A (see handouts for full reference).
+
+

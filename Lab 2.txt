@@ -1,0 +1,72 @@
+AC42001 RESEARCH FRONTIERS: WHAT ROBOT EYES CAN DO
+
+LABORATORY 2 WORKSHEET:
+COMPUTING A DISPARITY MAP FROM A SIMPLE STEREO PAIR
+
+
+**** INTRODUCTION
+
+Purpose
+- Understand disparity maps in practice
+- Understand practical issues behind stereo pair acquisition
+- Compute disparity map from a near-rectified stero pair of images
+
+
+Background
+- The lecture on stereo and associated handout
+- Rectification was only touched upon during the lecture, but is detailed in the handout.
+  For our purposes, a rectified stereo pair is formed by two images in which points in
+  any corresponding pair have the same column co-ordinate.
+  This is normally achieved by an algebraic procedure (actually, several exist).
+  A nearly rectified stereo pair is simply achieved by taking a picture, shifting a camera
+  along its image rows, then acquiring the second picture. In practice, disparity vectors
+  will be nearly parallel to the image rows. The big advantage is that the search region
+  can be "long and thin" instead of square, saving much computation time.
+
+
+Outcome
+1. Initial MATLAB code to compute the disparity map of two near-rectified images
+2. List of problems encountered and problems in the disparity maps your code generates.
+	We will work on these in the third lab.
+	
+Material supplied
+- Stereo pairs of rectified images as for Lab 1 (see VLE)
+- Webcams to acquire your own nearly-rectified pairs.
+
+
+
+**** WHAT TO DO
+
+(1) Download a pair of images from the module's VLE page.
+(2) Verify manually that the stereo pairs are rectified, e.g., using Paint,
+	checking manually the co-ordinates of correponding points.
+(3) Write a function, SUPPORT_CMP(), comparing two support windows.
+	If necessary, revise the handout illustrating the SSD operation.
+    	Here's a reminder of the essentials.
+	- Start with a function that returns a number quantifying the difference between 
+		two support windows. The window size must be a parameter.
+		Choose SAD or SSD as your measure. Both windows must be the same size.
+	- Test that the function works by running suitable experiments. 
+		To design them, recall what was said at lectures, or check the handout.
+(4) Now write a function, PIXEL_DISP(), estimating the disparity vector of a single pixel in the left image.
+    	- Use the function from (3) to compare the fixed left-image pixel with each pixel within a search area
+		 in the right image. This populates the search area with SUPPORT_CMP() values.
+	- PIXEL_DISP() must return (a) the right point which generated the minimum 
+		SUPPORT_CMP() value in the search area, (b) the associated minimum value,
+		(c) the disparity vector.
+(5) Now write a script, DISP_MAP.M, which applies PIXEL_DISP() to every pixel in the left image.
+	This populates the left image with disparity value, which means you have calculated the disparity map!
+(6) Now check that the disparity vectors are practically horizontal (parallel to image rows).
+	If so, you can display simply the x (row) co-ordinate of the vector at each pixel,
+	resulting in a black/white image. This image should gives an impression of distances.
+(7) Try your code on several image pairs, starting with the ones provided and moving to some you
+	acquire yourselves (remember to try and get nearly rectified stereo pairs!).
+	What problems do you encounter? E.g., is your map complete?
+	Write a list of problems.
+	We shall 
+
+
+**** SOME QUESTIONS TO CONSIDER (AMONG OTHERS)
+- What does the size of the support window depend on? How does your disp map changes using small and large windows?
+- What does the size of the search window depend on? Do your results change with different sizes? How?
+- How do you verify that a stereo pair is rectified?

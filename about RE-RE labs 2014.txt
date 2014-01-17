@@ -1,0 +1,47 @@
+RESEARCH FRONTIERS AC42001: WHAT ROBOT EYES CAN DO
+
+**** MATLAB LABS 2014 ****
+
+There are 4 MATLAB supervised-lab slots of 2 hours each.
+The last lab slot is dedicated to the assessed demos of the group assignment.
+
+See also on VLE:
+- lab sheets
+- assignment instructions
+- full module timetable.
+
+
+**** PURPOSE
+- To try your hands at a real 3-D computer vision problem
+- To develop a MATLAB program computing disparity maps, the basic element of computational stereo
+- To learn or consolidate your knowledge and practice of MATLAB
+
+
+**** MATERIALS
+For the theory, see the handout on stereo on the VLE and references therein.
+For stereo pairs, start using those provided on the VLE.
+If you acquire your own, please remember to convert your images *before* processing
+so that they are:
+- black and white (not colour)
+- about 300x300 pixels (larger will take too long to process)
+
+
+**** LABORATORIES PLAN
+
+Week 1:
+	Introduction to / consolidation of MATLAB.
+	Focus on elements needed for our task: acquiring images, matrix operations, display. 
+	Playing with webcams/phones: acquire and load images into your MATLAB programs.
+
+Week 2:
+	load images, compare images to find corresponding elements. 
+	This is the basic operation to build a disparity map.
+
+Week 3:
+	computing, visualizing, analyzing, improving disparity maps.
+
+Week 4:
+	complete assignment; **only if already completed**, try 3-D reconstruction by triangulation
+
+Week 5:
+	assessed demos of your final programs on data provided by the lecturer.
