@@ -13,11 +13,11 @@ avgB = mean2(B);
 A = double(A);
 B = double(B);
 
-%C = (A-B).^2;
+
 
 C = ((A-avgA)-(B- avgB)).^2 / std(A(:))*std(B(:));
 
-C = sum(C(:));
+C = sum(sum(C(:)));
 
 ssdnumber = C;
 end

@@ -2,8 +2,8 @@ A = imread('testL.jpg');
 B = imread('testR.jpg');
 
 %SSD
-A = A(1:30,1:30,:);
-B = B(1:30,1:30,:);
+%A = A(1:30,1:30,:);
+%B = B(1:30,1:30,:);
 
 avgA = mean2(A);
 avgB = mean2(B);
@@ -19,4 +19,4 @@ C = sum(sum(C(:)))
 
 D = abs(((A-avgA)-(B- avgB))) / std(A(:))*std(B(:));
 
-D = sum(sum(D(:)))
+D = sum(sum(D(:)));
