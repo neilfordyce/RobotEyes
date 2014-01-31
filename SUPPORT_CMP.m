@@ -4,9 +4,6 @@ function [ ssdnumber ] = SUPPORT_CMP( window_size, imgL,imgR )
 %window size to be examined.
 
 %SSD
-size(imgL)
-window_size
-
 A = imgL(1:window_size,1:window_size,:);
 B = imgR(1:window_size,1:window_size,:);
 
