@@ -1,4 +1,4 @@
-function [ minimumvalue, location, DISP] = PIXEL_DISP(x, y, imgL,imgR, subwindowsize, searcharea )
+function [ minimumvalue,disparity_vector,mag ] = PIXEL_DISP(x, y, imgL,imgR, subwindowsize, searcharea )
 %PIXEL_DISP Summary of this function goes here
 %Get first pixel on left window
 A_SUBWINDOW = imgL(x:subwindowsize+x, y:subwindowsize+y);
@@ -16,7 +16,10 @@ end
 %location
 [minimumvalue,ind] = min(DISP(:));
 [m,n] = ind2sub(size(DISP),ind);
-location = -[m+offset,n+offset];
+%n and m are rows and columns so switch for xy coords
+disparity_vector = -[n+offset, m+offset];
+
+mag = norm(disparity_vector);
 
 end
 
