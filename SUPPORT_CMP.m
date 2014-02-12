@@ -1,4 +1,4 @@
-function [ ssdnumber ] = SUPPORT_CMP( window_size, imgL,imgR )
+function [ ssdnumber ] = SUPPORT_CMP( imgL,imgR )
 %SUPPORT_CMP: Compute the SSD between pixels in a left and right
 %stereoscopic image. Inputs include the left and right image along with the
 %window size to be examined.
@@ -21,5 +21,5 @@ C = (A-B).^2;
 
 C = sum(C(:));
 
-ssdnumber = C;
+ssdnumber = C / numel(imgL); %Normalisation step
 end
