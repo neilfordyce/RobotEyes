@@ -10,7 +10,7 @@ DISP = ones(x_searcharea, round(searcharea/2)) * inf;  %All disparities inf to b
 min_disp = -inf;
 for x2 = 1:x_searcharea
     for y2 = 1:round(searcharea/2)  %Need 1/2 the window only, the other half is in the wrong direction
-        B_SUBWINDOW = B_SEARCHWINDOW(x2:x2+floor(subwindowsize)-1, y2:y2+floor(subwindowsize)-1);
+        B_SUBWINDOW = B_SEARCHWINDOW(x2:x2+subwindowsize-1, y2:y2+subwindowsize-1);
         DISP(x2,y2) = SUPPORT_CMP(A_SUBWINDOW, B_SUBWINDOW);
         
         if DISP(x2,y2) < min_disp && x > 50 && y > 60 && subwindowsize > 4

@@ -10,18 +10,19 @@ numCols = size(imgL,2);
 
 DISP_MAG = zeros(size(imgL));
 
+grad = gradient(double(imgL));
+
 for R = PAD:numRows-PAD 
     for C = PAD:numCols-PAD 
         max_grad = -inf;
-        support_window_size = 21;
+        support_window_size = 9;
         max_window_size = 21;
-        search_window_size = 31;
+        search_window_size = 31;        
         
         %Grow the window until there is enough detail in the support window
-        while max_grad < 30 && support_window_size <= max_window_size 
-            subwindow = SUB_WINDOW(imgL, R, C, support_window_size, support_window_size);
-            grad = gradient(double(subwindow));
-            max_grad = max(abs(grad(:)));
+        while max_grad < 1.3 && support_window_size <= max_window_size 
+            subwindow = SUB_WINDOW(grad, R, C, support_window_size, support_window_size);
+            max_grad = mean(abs(subwindow(:)));
             support_window_size = support_window_size + 2;
         end
           
